@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+@mixin for-phone-only {
+  @media (max-width: 599px) {
+    @content;
+  }
+}
+
+@mixin for-tablet-portrait-up {
+  @media (min-width: 768px) and (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin for-tablet-landscape-up {
+  @media (min-width: 1024px) and (max-width: 1280px) {
+    @content;
+  }
+}
+
+@mixin for-desktop {
+  @media (min-width: 1025px) {
+    @content;
+  }
+}
+
+.scroll-content {
+  top: -85px !important;
+}
+
+.hide-header {
+  position: absolute;
+  top: -85px;
+}
+
+.show-header {
+  position: absolute;
+  top: 0;
+  z-index: 999;
+  background-color: var(--ion-color-primary);
+}
+
+.search-design{
+  --border-color: transparent;
+}
+
+.search-suggestion-design{
+  height: auto;
+  max-height: 150px;
+  width: 65vw;
+  left: 25vw;
+  position: absolute;
+  background: white;
+  z-index: 99;
+  @include for-tablet-landscape-up(){
+    width: 60vw;
+    left: 16vw;
+  }
+  @include for-desktop(){
+    width: 60vw;
+    left: 18vw;
+  }
+  ion-list{
+    overflow-y: auto;
+    height: auto;
+    max-height: 150px;
+  }
+}
+
+.banner-design{
+  width: 100%;
+  background: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(116, 51, 9, 0.73)),
+  url('../../assets/images/sleep-tight-1-1313116-1599x1070.jpg') center no-repeat;
+  background-size: cover;
+  @include for-desktop(){ 
+    height: 90vh;
+    padding: 7% 0;
+  }
+  @include for-tablet-landscape-up(){
+    height: 60vh;
+  }
+  @include for-tablet-portrait-up(){
+    height: 50vh;
+    padding: 10% 0;
+  }
+  @include for-phone-only(){
+    height: 50vh;
+    padding: 15% 0;
+  }
+
+  h1{
+    text-align: center;
+    line-height: 0.9em;
+    color: white;
+    font-family: 'Dancing Script', cursive;
+    font-size: 160px;
+    @include for-phone-only(){
+      font-size: 60px;
+    }
+    @include for-tablet-portrait-up(){
+      font-size: 120px;
+    }
+  }
+}
+
+.custom-card {
+  height: 350px;
+  border-radius: 8px;
+  margin: 20px;
+  box-shadow: 0 0 7px 2px black;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+
+  @include for-desktop() {
+    height: 400px;
+  }
+
+  .gradient-design {
+    position: absolute;
+    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0) 7%,
+      rgba(55, 55, 55, 1) 100%,
+      rgba(32, 32, 32, 1) 100%,
+      rgba(0, 0, 0, 1) 100%
+    );
+  }
+
+  .breed-detail-design {
+    margin-left: 10px;
+    color: orange;
+    ion-icon {
+      font-size: 30px;
+      color: orange;
+    }
+    @include for-phone-only() {
+      padding-top: 70%;
+    }
+    @include for-tablet-portrait-up() {
+      padding-top: 103%;
+      ion-icon {
+        margin-top: 10px;
+      }
+    }
+    @include for-tablet-landscape-up() {
+      padding-top: 70%;
+      ion-icon {
+        margin-top: 10px;
+      }
+    }
+    @include for-desktop() {
+      padding-top: 85%;
+      ion-icon {
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .breed-buttons-design {
+    color: orange;
+    font-size: 30px;
+    padding: 7%;
+    @include for-phone-only() {
+      padding-top: 5%;
+    }
+    @include for-desktop {
+      padding: 5%;
+    }
+  }
+
+  ion-spinner {
+    width: 100%;
+    height: 70px;
+    margin: 140px 0;
+  }
+}
+
+#uploadContainer {
+  visibility: hidden;
+  position: absolute;
+}

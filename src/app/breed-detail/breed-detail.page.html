@@ -1,0 +1,201 @@
+<ion-header [ngClass]="{'show-header': showHeader, 'hide-header': !showHeader}">
+  <ion-toolbar mode="md">
+    <ion-row class="header-design">
+      <ion-col size="2" size-md="1" size-lg="1" size-xl="1">
+        <ion-button fill="clear" routerLink="/landing" routerDirection="back">
+          <ion-icon name="chevron-back-outline" color="primary" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="4" size-md="3" size-lg="2" size-xl="2">
+        <div class="logo"></div>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content
+[scrollEvents]="true"
+(ionScroll)="ScrollHeader($event)">
+  <ion-grid class="ion-no-padding">
+    <ion-row class="header-design">
+      <ion-col size="12">
+        <ion-toolbar mode="md">
+          <ion-row>
+            <ion-col size="2" size-md="1" size-lg="1" size-xl="1">
+              <ion-button fill="clear" routerLink="/landing" routerDirection="back">
+                <ion-icon name="chevron-back-outline" color="primary" slot="icon-only"></ion-icon>
+              </ion-button>
+            </ion-col>
+            <ion-col size="4" size-md="3" size-lg="2" size-xl="2">
+              <div class="logo"></div>
+            </ion-col>
+          </ion-row>
+        </ion-toolbar>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12" size-md="6" size-lg="6" offset-xl="1" size-xl="4">
+        <div class="breed-image" [style.backgroundImage]="'url('+ breedImage  +')'"></div>
+      </ion-col>
+      
+      <ion-col hidden-for-mobile size="6" size-xl="5">
+        <ion-row class="detail-design">
+          <ion-col size="12">
+            <h2>{{breedDetail?.name}}</h2>
+            <span>{{breedDetail?.description}}</span>
+          </ion-col>
+    
+          <ion-col size="12">
+            
+            <ion-row>
+              <ion-col size="6">
+                <h6>Weight <sup>kg</sup></h6>
+                <span>{{breedDetail?.weight.metric}}</span>
+              </ion-col>
+              <ion-col size="6">
+                <h6>Life Span</h6>
+                <span>{{breedDetail?.life_span}}</span>
+              </ion-col>
+            </ion-row>
+
+            <h6>Moods</h6>
+            <span>{{breedDetail?.temperament}}</span>
+    
+            <h6>Know More</h6>
+            <span tappable style="text-decoration: underline; color: rgb(62, 62, 255); font-size: small;"
+            (click)="openLink(breedDetail?.wikipedia_url)">Wikipedia - {{breedDetail?.wikipedia_url}}</span> <br>
+            
+            <span tappable style="text-decoration: underline; color: rgb(62, 62, 255); font-size: small;"
+            (click)="openLink(breedDetail?.vetstreet_url)">Vetstreet - {{breedDetail?.vetstreet_url}}</span> <br>
+
+            <span tappable style="text-decoration: underline; color: rgb(62, 62, 255); font-size: small;"
+            (click)="openLink(breedDetail?.vcahospitals_url)">VCHospital - {{breedDetail?.vcahospitals_url}}</span>
+          </ion-col>
+
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+    <ion-row hidden-tablet-up>
+      <ion-col offset="3" size="6">
+        <ion-segment mode="md" [(ngModel)]="selectedSegment">
+          <ion-segment-button value="description">
+            <ion-label style="font-size: x-small;">Description</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="statistics">
+            <ion-label style="font-size: x-small;">Statistics</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+    </ion-row>
+
+    <div [ngSwitch]="selectedSegment">
+      <div *ngSwitchCase="'description'">
+        <ion-row class="detail-design">
+          <ion-col size="12">
+            <h2>{{breedDetail?.name}}</h2>
+            <span>{{breedDetail?.description}}</span>
+          </ion-col>
+    
+          <ion-col size="12">
+            
+            <ion-row>
+              <ion-col size="6">
+                <h6>Weight <sup>kg</sup></h6>
+                <span>{{breedDetail?.weight.metric}}</span>
+              </ion-col>
+              <ion-col size="6">
+                <h6>Life Span</h6>
+                <span>{{breedDetail?.life_span}}</span>
+              </ion-col>
+            </ion-row>
+
+            <h6>Moods</h6>
+            <span>{{breedDetail?.temperament}}</span>
+    
+            <h6>Know More</h6>
+            <span tappable style="text-decoration: underline; color: rgb(62, 62, 255); font-size: small;"
+            (click)="openLink(breedDetail?.wikipedia_url)">Wikipedia - {{breedDetail?.wikipedia_url}}</span> <br>
+            
+            <span tappable style="text-decoration: underline; color: rgb(62, 62, 255); font-size: small;"
+            (click)="openLink(breedDetail?.vetstreet_url)">Vetstreet - {{breedDetail?.vetstreet_url}}</span> <br>
+
+            <span tappable style="text-decoration: underline; color: rgb(62, 62, 255); font-size: small;"
+            (click)="openLink(breedDetail?.vcahospitals_url)">VCHospital - {{breedDetail?.vcahospitals_url}}</span>
+          </ion-col>
+        </ion-row>
+      </div>
+
+      <div *ngSwitchCase="'statistics'">
+        <ion-row class="detail-design-stats">
+          <ion-col size="auto" size-md="3" size-lg="3">
+            <div class="circle-design">
+              <p>{{breedDetail?.affection_level}}</p>
+              <p>Affection level</p>
+            </div>
+          </ion-col>
+
+          <ion-col size="auto" size-md="3" size-lg="3">
+            <div class="circle-design">
+              <p>{{breedDetail?.child_friendly}}</p>
+              <p>Child Friendly level</p>
+            </div>
+          </ion-col>
+
+          <ion-col size="auto" size-md="3" size-lg="3">
+            <div class="circle-design">
+              <p>{{breedDetail?.dog_friendly}}</p>
+              <p>Dog Friendly level</p>
+            </div>
+          </ion-col>
+
+          <ion-col size="auto" size-md="3" size-lg="3">
+            <div class="circle-design">
+              <p>{{breedDetail?.social_needs}}</p>
+              <p>Social Needs</p>
+            </div>
+          </ion-col>
+
+          <ion-col size="auto" size-md="3" size-lg="3">
+            <div class="circle-design">
+              <p>{{breedDetail?.energy_level}}</p>
+              <p>Energy level</p>
+            </div>
+          </ion-col>
+
+          <ion-col size="auto" size-md="3" size-lg="3">
+            <div class="circle-design">
+              <p>{{breedDetail?.shedding_level}}</p>
+              <p>Shedding Level</p>
+            </div>
+          </ion-col>
+          
+          <ion-col size="auto" size-md="3" size-lg="3">
+            <div class="circle-design">
+              <p>{{breedDetail?.intelligence}}</p>
+              <p>Intelligence level</p>
+            </div>
+          </ion-col>
+
+        </ion-row>
+      </div>
+    </div>
+
+    <ion-row style="margin-top: 16px">
+      <ion-col offset="1" size="5" offset-md="2" size-md="4" size-lg="4" offset-xl="3" size-xl="3">
+        <ion-button expand="block" shape="round" (click)="toggleFavourite(breedDetail?.reference_image_id)">
+          <ion-label>Add to Favorite</ion-label>
+          <ion-icon name="bookmark"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col size="5" size-md="4" size-lg="4" size-xl="3">
+        <ion-button expand="block" shape="round" (click)="toggleVote(breedDetail?.reference_image_id)">
+          <ion-label>Add Vote</ion-label>
+          <ion-icon name="heart"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,213 @@
+<ion-header [ngClass]="{'show-header': showHeader, 'hide-header': !showHeader}">
+  <ion-toolbar mode="md">
+    <ion-row class="header-design">
+      <ion-col size="4" size-md="3" size-lg="2" size-xl="2">
+        <div class="logo"></div>
+      </ion-col>
+      <ion-col hidden-tablet-up offset="6" size="auto" style="align-self: center;" routerLink="/search-detail" routerDirection="forward">
+        <ion-icon name="search-circle-outline"></ion-icon>
+      </ion-col>
+
+      <ion-col hidden-for-mobile size="8">
+        <form [formGroup]="searchForm">
+          <ion-item class="search-design" line="none">
+            <ion-input position="start" formControlName="searchInput" placeholder="Search.." (ionChange)="filter()"></ion-input>
+            <ion-icon position="end" name="search"></ion-icon>
+          </ion-item>
+        </form>
+      </ion-col>
+
+    </ion-row>
+  </ion-toolbar>
+
+  <div class="search-suggestion-design" *ngIf="isSearching && showHeader">
+    <ion-list>
+      <ion-item *ngFor="let item of filterList" (click)="toDetail(item.id)">{{item.name}}</ion-item>
+    </ion-list>
+  </div>
+</ion-header>
+
+<ion-content
+[scrollEvents]="true"
+(ionScroll)="ScrollHeader($event)">
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="openUploadPromt()">
+      <ion-icon name="cloud-upload-outline"></ion-icon>
+    </ion-fab-button>
+
+    <div id="uploadContainer">
+      <input #catImage type="file" accept="image/*" (change)="openWebOptions($event)">
+    </div>
+  </ion-fab>
+
+  <ion-grid class="ion-no-padding">
+    <ion-row class="header-design">
+      <ion-col size="12">
+        <ion-toolbar mode="md">
+          <ion-row>
+            <ion-col size="4" size-md="3" size-lg="2" size-xl="2">
+              <div class="logo"></div>
+            </ion-col>
+            <ion-col hidden-tablet-up offset="6" size="auto" style="align-self: center;" routerLink="/search-detail" routerDirection="forward">
+              <ion-icon name="search-circle-outline"></ion-icon>
+            </ion-col>
+
+            <ion-col hidden-for-mobile size="8">
+              <form [formGroup]="searchForm">
+                <ion-item class="search-design" line="none">
+                  <ion-input position="start" formControlName="searchInput" placeholder="Search.." (ionChange)="filter()"></ion-input>
+                  <ion-icon position="end" name="search"></ion-icon>
+                </ion-item>
+              </form>
+            </ion-col>
+
+          </ion-row>
+        </ion-toolbar>
+      </ion-col>
+    </ion-row>
+
+    <div class="search-suggestion-design" *ngIf="isSearching">
+      <ion-list>
+        <ion-item *ngFor="let item of filterList" (click)="toDetail(item.id)">{{item.name}}</ion-item>
+      </ion-list>
+    </div>
+    
+    <ion-row>
+      <ion-col size="12">
+        <div class="banner-design">
+          <h1>CATS <br> NAPS <br> SNACKS</h1>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col offset="1" size="10" offset-md="0.5" size-md="6" size-lg="6" size-xl="4">
+        <ion-segment mode="md" [(ngModel)]="selectedSegment">
+          <ion-segment-button value="breeds">
+            <ion-label style="font-size: smaller;">Breeds</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="votes">
+            <ion-label style="font-size: smaller;">Votes</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="favourite">
+            <ion-label style="font-size: smaller;">Favourite</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+
+        <div [ngSwitch]="selectedSegment">
+          <div *ngSwitchCase="'breeds'">
+            <ion-row  *ngIf="loaded">
+              <ion-col *ngFor="let breed of breedList; let i = index" size="12" size-md="4" size-lg="4" size-xl="3">
+                <div [style.backgroundImage]="'url('+ breed.image.url +')'" class="custom-card">
+                  <div class="gradient-design" (click)="toDetail(breed.id)"></div>
+        
+                  <ion-row class="breed-buttons-design">
+                    <ion-col style="align-self: center;" offset="10.5" size="auto" (click)="toDetail(breed.id)" routerDirection="forward">
+                      <ion-icon name="information-circle-outline"></ion-icon>
+                    </ion-col>
+                  </ion-row>
+        
+                  <ion-row class="breed-detail-design">
+                    <ion-col size="10">
+                      <h5>{{breed.name}}</h5>
+                    </ion-col>
+                    <ion-col size="auto" style="align-self: center;" (click)="toggleVote(breed.image.id)">
+                      <ion-icon name="heart-outline"></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              </ion-col>
+        
+              <ion-col *ngIf="!loaded" size="12" size-md="4" size-lg="4" size-xl="3">
+                <div class="custom-card">
+                  <ion-spinner name="crescent"></ion-spinner>
+                </div>
+                <div class="custom-card">
+                  <ion-spinner name="crescent"></ion-spinner>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+          
+          <div *ngSwitchCase="'votes'">
+            <ion-row *ngIf="loaded" >
+              <ion-col *ngFor="let vote of votesList; let i = index" size="12" size-md="4" size-lg="4" size-xl="3">
+                <div [style.backgroundImage]="'url('+ voteImage[i].url +')'" class="custom-card">
+                  <div class="gradient-design" (click)="toDetail(voteImage[i].breeds[0].id)"></div>
+        
+                  <ion-row class="breed-buttons-design">
+                    <ion-col style="align-self: center;" offset="10.5" size="auto" (click)="toDetail(voteImage[i].breeds[0].id)" routerDirection="forward">
+                      <ion-icon name="information-circle-outline"></ion-icon>
+                    </ion-col>
+                  </ion-row>
+        
+                  <ion-row class="breed-detail-design">
+                    <ion-col size="9">
+                      <h5>{{voteImage[i].breeds[0].name}}</h5>
+                    </ion-col>
+                    <ion-col size="1" style="align-self: center;">
+                      <p>{{vote.value}}</p>
+                    </ion-col>
+                    <ion-col size="auto" style="align-self: center;" (click)="untoggleVote(vote.id)">
+                      <ion-icon name="heart"></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              </ion-col>
+        
+              <ion-col *ngIf="!loaded" size="12" size-md="4" size-lg="4" size-xl="3">
+                <div class="custom-card">
+                  <ion-spinner name="crescent"></ion-spinner>
+                </div>
+                <div class="custom-card">
+                  <ion-spinner name="crescent"></ion-spinner>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+  
+          <div *ngSwitchCase="'favourite'">
+            <ion-row *ngIf="loaded">
+              <ion-col *ngFor="let favorite of favouriteList; let i = index" size="12" size-md="4" size-lg="4" size-xl="3">
+                <div [style.backgroundImage]="'url('+ favouriteImage[i].url +')'" class="custom-card">
+                  <div class="gradient-design" (click)="toDetail(favouriteImage[i].breeds[0].id)"></div>
+        
+                  <ion-row class="breed-buttons-design">
+                    <ion-col style="align-self: center;" offset="10.5" size="auto" (click)="toDetail(favouriteImage[i].breeds[0].id)" routerDirection="forward">
+                      <ion-icon name="information-circle-outline"></ion-icon>
+                    </ion-col>
+                  </ion-row>
+        
+                  <ion-row class="breed-detail-design">
+                    <ion-col size="10">
+                      <h5>{{favouriteImage[i].breeds[0].name}}</h5>
+                    </ion-col>
+                    <ion-col size="auto" style="align-self: center;" (click)="untoggleFavourite(favorite.id)">
+                      <ion-icon name="bookmark"></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              </ion-col>
+        
+              <ion-col *ngIf="!loaded" size="12" size-md="4" size-lg="4" size-xl="3">
+                <div class="custom-card">
+                  <ion-spinner name="crescent"></ion-spinner>
+                </div>
+                <div class="custom-card">
+                  <ion-spinner name="crescent"></ion-spinner>
+                </div>
+              </ion-col>
+            </ion-row>
+          </div>
+        </div>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,1 @@
+export const SERVER_URL = "https://api.thecatapi.com/v1";
